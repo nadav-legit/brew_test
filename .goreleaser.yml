@@ -19,7 +19,7 @@ universal_binaries:
 
 brews:
   -
-    name: mediumautopost
+    name: nadav_first_brew
     homepage: "https://github.com/nadav-legit/brew_test"
     tap:
       owner: nadav-legit
