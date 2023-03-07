@@ -23,10 +23,7 @@ brews:
     homepage: "https://github.com/nadav-legit/brew_test"
     tap:
       owner: nadav-legit
-      name: homebrew-nadav-legit
-    commit_author:
-      name: noyna
-      email: nadav@legitsecurity.com
+      name: nadav-legit
 
 checksum:
   name_template: 'checksums.txt'
