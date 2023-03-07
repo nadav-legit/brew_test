@@ -20,13 +20,13 @@ universal_binaries:
 brews:
   -
     name: mediumautopost
-    homepage: "https://github.com/askcloudarchitech/mediumautopost"
+    homepage: "https://github.com/nadav-legit/brew_test"
     tap:
-      owner: askcloudarchitech
-      name: homebrew-askcloudarchitech
+      owner: nadav-legit
+      name: brew_test
     commit_author:
-      name: gmorse81
-      email: gmorse81@gmail.com
+      name: noyna
+      email: nadav@legitsecurity.com
 
 checksum:
   name_template: 'checksums.txt'
