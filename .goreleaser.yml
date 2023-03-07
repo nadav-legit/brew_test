@@ -1,5 +1,5 @@
 builds:
-  - binary: mediumautopost
+  - binary: nadav_first_brew
     goos:
       - darwin
       - linux
