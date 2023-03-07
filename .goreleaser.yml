@@ -23,7 +23,7 @@ brews:
     homepage: "https://github.com/nadav-legit/brew_test"
     tap:
       owner: nadav-legit
-      name: brew_test
+      name: homebrew-nadav-legit
     commit_author:
       name: noyna
       email: nadav@legitsecurity.com
