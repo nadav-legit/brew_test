@@ -1,5 +1,5 @@
 builds:
-  - binary: nadav_first_brew
+  - binary: brew_test
     goos:
       - darwin
       - linux
@@ -19,7 +19,7 @@ universal_binaries:
 
 brews:
   -
-    name: nadav_first_brew
+    name: brew_test
     homepage: "https://github.com/nadav-legit/brew_test"
     tap:
       owner: nadav-legit
