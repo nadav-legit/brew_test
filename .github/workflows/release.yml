@@ -60,5 +60,5 @@ jobs:
         brew bump-formula-pr -f --version=${{ steps.get_version.outputs.version }} --no-browse --no-audit \
         --sha256=${{ steps.shasum.outputs.sha }} \
         --url="https://github.com/nadav-legit/brew_test/releases/download/${{ steps.get_version.outputs.version }}/brew_test_${{ steps.get_version.outputs.version }}_darwin_all.tar.gz" \
-        ${{ steps.get_version.outputs.version }} \
+        --version=${{ steps.get_version.outputs.version }} \
         nadav-legit/nadav-legit/brew_test
