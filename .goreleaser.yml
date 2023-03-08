@@ -17,13 +17,13 @@ release:
 universal_binaries:
   - replace: true
 
-# brews:
-#   -
-#     name: brew_test
-#     homepage: "https://github.com/nadav-legit/brew_test"
-#     tap:
-#       owner: nadav-legit
-#       name: nadav-legit
+brews:
+  -
+    name: brew_test
+    homepage: "https://github.com/nadav-legit/brew_test"
+    tap:
+      owner: nadav-legit
+      name: nadav-legit
 
 checksum:
   name_template: 'checksums.txt'
