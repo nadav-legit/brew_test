@@ -31,13 +31,33 @@ jobs:
           args: release --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
-  homebrew:
+#   homebrew:
+#     needs: goreleaser
+#     name: Bump Homebrew formula
+#     runs-on: macos-latest
+#     steps:
+#       - uses: dawidd6/action-homebrew-bump-formula@v3
+#         with:
+#           token: ${{ secrets.PUBLISHER_TOKEN }}
+#           tap: nadav-legit/nadav-legit
+#           formula: brew_test
+  bump:   
     needs: goreleaser
-    name: Bump Homebrew formula
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: dawidd6/action-homebrew-bump-formula@v3
-        with:
-          token: ${{ secrets.PUBLISHER_TOKEN }}
-          tap: nadav-legit/nadav-legit
-          formula: brew_test
+    - name: Get version
+      id: get_version
+      run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+    - name: Set SHA
+      id: shasum
+      run: |
+        echo ::set-output name=sha::"$(shasum -a 256 ./target/gitui-mac.tar.gz | awk '{printf $1}')"
+    - name: Bump Brew
+      env: 
+        HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
+      run: |
+        brew tap nadav-legit/nadav-legit
+        brew bump-formula-pr -f --version=${{ steps.get_version.outputs.version }} --no-browse --no-audit \
+        --sha256=${{ steps.shasum.outputs.sha }} \
+        --url="https://github.com/nadav-legit/brew_test/releases/download/${{ steps.get_version.outputs.version }}/brew_test_0.0.14_darwin_all.tar.gz" \
+        nadav-legit/nadav-legit/brew_test
