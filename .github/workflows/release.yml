@@ -42,7 +42,7 @@ jobs:
 #           tap: nadav-legit/nadav-legit
 #           formula: brew_test  release:
   release:
-    needs: macos_sign
+    needs: goreleaser
     runs-on: ubuntu-latest
     outputs:
       brew_release_file: ${{ steps.artifact_name.outputs.brew_release_file }}
@@ -87,7 +87,7 @@ jobs:
         echo ::set-output name=sha::"$(shasum -a 256 ${{ needs.release.outputs.brew_release_file }} | awk '{printf $1}')"
     - name: Bump Brew
       env: 
-        HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+        HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
       run: |
         brew tap nadav-legit/nadav-legit
         brew bump-formula-pr -f --version=${{ steps.get_version.outputs.version }} --no-browse --no-audit \
