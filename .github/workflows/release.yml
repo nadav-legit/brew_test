@@ -81,14 +81,15 @@ jobs:
     steps:
     - uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # ratchet:actions/download-artifact@v3
       with:
-          name: ${{ env.ARTIFACTS_DOWNLOAD_PATH }}/*
-          path: ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
+          name: brew_test_darwin_amd64.tar.gz
+          path: brew_test_darwin_amd64.tar.gz
     - name: Get version
       id: get_version
       run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
     - name: Set SHA
       id: shasum
       run: |
+        cp brew_test_darwin_amd64.tar.gz ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
         cd ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
         echo ::set-output name=sha::"$(shasum -a 256 ${{ needs.release.outputs.brew_release_file }} | awk '{printf $1}')"
     - name: Bump Brew
