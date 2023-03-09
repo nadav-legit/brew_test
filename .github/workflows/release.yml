@@ -40,25 +40,58 @@ jobs:
 #         with:
 #           token: ${{ secrets.PUBLISHER_TOKEN }}
 #           tap: nadav-legit/nadav-legit
-#           formula: brew_test
+#           formula: brew_test  release:
+  release:
+    needs: macos_sign
+    runs-on: ubuntu-latest
+    outputs:
+      brew_release_file: ${{ steps.artifact_name.outputs.brew_release_file }}
+    permissions:
+      actions: read # To read the workflow path.
+      id-token: write # To sign the provenance.
+      contents: write # To add assets to a release.
+    env:
+      ARTIFACTS_DOWNLOAD_PATH: /tmp/macos_archives
+    steps:
+      - name: create fake artifact
+        run: |
+          mkdir ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
+          echo '12345' > ${{ env.ARTIFACTS_DOWNLOAD_PATH }}/brew_test_darwin_amd64.tar.gz
+      - name: Release
+        uses: softprops/action-gh-release@d4e8205d7e959a9107da6396278b2f1f07af0f9b
+        # if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ env.ARTIFACTS_DOWNLOAD_PATH }}/*
+      - name: brew-inputs
+        id: artifact_name
+        run: |
+          set -euo pipefail
+          cd "${{ env.ARTIFACTS_DOWNLOAD_PATH }}"
+          file_name=$(find . -maxdepth 1 -type f -name "*darwin_amd64*" -exec basename {} \;)
+          echo "brew_release_file=$file_name" >> $GITHUB_OUTPUT
   bump:   
-    needs: goreleaser
+    needs: release
     runs-on: macos-latest
     steps:
+    - uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # ratchet:actions/download-artifact@v3
+      with:
+          name: ${{ env.ARTIFACTS_DOWNLOAD_PATH }}/*
+          path: ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
     - name: Get version
       id: get_version
       run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
     - name: Set SHA
       id: shasum
       run: |
-        echo ::set-output name=sha::"$(shasum -a 256 ./target/gitui-mac.tar.gz | awk '{printf $1}')"
+        cd ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
+        echo ::set-output name=sha::"$(shasum -a 256 ${{ needs.release.outputs.brew_release_file }} | awk '{printf $1}')"
     - name: Bump Brew
       env: 
-        HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
+        HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
       run: |
         brew tap nadav-legit/nadav-legit
         brew bump-formula-pr -f --version=${{ steps.get_version.outputs.version }} --no-browse --no-audit \
         --sha256=${{ steps.shasum.outputs.sha }} \
-        --url="https://github.com/nadav-legit/brew_test/releases/download/${{ steps.get_version.outputs.version }}/brew_test_${{ steps.get_version.outputs.version }}_darwin_all.tar.gz" \
+        --url="https://github.com/legit-labs/legitify/releases/download/${{ steps.get_version.outputs.version }}/${{ needs.release.outputs.brew_release_file }}" \
         --version=${{ steps.get_version.outputs.version }} \
         nadav-legit/nadav-legit/brew_test
