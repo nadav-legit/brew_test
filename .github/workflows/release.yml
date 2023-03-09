@@ -53,6 +53,11 @@ jobs:
     env:
       ARTIFACTS_DOWNLOAD_PATH: /tmp/macos_archives
     steps:
+      - name: create
+        run: |
+          mkdir ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
+          cd "${{ env.ARTIFACTS_DOWNLOAD_PATH }}"
+          echo 123456666 > brew_test_darwin_amd64.tar.gz
       - name: Release
         uses: softprops/action-gh-release@d4e8205d7e959a9107da6396278b2f1f07af0f9b
         # if: startsWith(github.ref, 'refs/tags/')
