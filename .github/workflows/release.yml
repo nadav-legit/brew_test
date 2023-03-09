@@ -53,11 +53,6 @@ jobs:
     env:
       ARTIFACTS_DOWNLOAD_PATH: /tmp/macos_archives
     steps:
-      - name: create fake artifact
-        run: |
-          mkdir ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
-          echo '12345' > ${{ env.ARTIFACTS_DOWNLOAD_PATH }}/brew_test_darwin_amd64.tar.gz
-          echo '12222' > ${{ env.ARTIFACTS_DOWNLOAD_PATH }}/brew_test_darwin_arm64.tar.gz
       - name: Release
         uses: softprops/action-gh-release@d4e8205d7e959a9107da6396278b2f1f07af0f9b
         # if: startsWith(github.ref, 'refs/tags/')
