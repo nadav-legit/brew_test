@@ -71,7 +71,6 @@ jobs:
         id: artifact_name
         run: |
           set -euo pipefail
-          mkdir ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
           cd "${{ env.ARTIFACTS_DOWNLOAD_PATH }}"
           echo 123456666 > brew_test_darwin_amd64.tar.gz
           file_name=$(find . -maxdepth 1 -type f -name "*darwin_amd64*" -exec basename {} \;)
