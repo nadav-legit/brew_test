@@ -85,12 +85,12 @@ jobs:
           path: ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
     - name: Get version
       id: get_version
-      run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+      run: echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
     - name: Set SHA
       id: shasum
       run: |
         cd ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
-        echo ::set-output name=sha::"$(shasum -a 256 ${{ needs.release.outputs.brew_release_file }} | awk '{printf $1}')"
+        echo "sha=$(shasum -a 256 ${{ needs.release.outputs.brew_release_file }} | awk '{printf $1}')" >> $GITHUB_OUTPUT
     - name: Bump Brew
       env: 
         HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
