@@ -91,6 +91,8 @@ jobs:
       env: 
         HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
       run: |
+        brew --version
+        brew update
         brew tap nadav-legit/nadav-legit
         brew bump-formula-pr -f --version=${{ steps.get_version.outputs.version }} --no-browse --no-audit \
         --sha256=${{ steps.shasum.outputs.sha }} \
