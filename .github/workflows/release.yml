@@ -92,8 +92,6 @@ jobs:
         cd ${{ env.ARTIFACTS_DOWNLOAD_PATH }}
         echo "sha=$(shasum -a 256 ${{ needs.release.outputs.brew_release_file }} | awk '{printf $1}')" >> $GITHUB_OUTPUT
     - name: Bump Brew
-      env: 
-        HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
       run: |
         brew tap nadav-legit/nadav-legit
         brew bump-formula-pr -f --version=${{ steps.get_version.outputs.version }} --no-browse --no-audit \
