@@ -72,6 +72,8 @@ jobs:
   bump:   
     needs: release
     runs-on: macos-latest
+    env:
+          ARTIFACTS_DOWNLOAD_PATH: /tmp/macos_archives
     steps:
     - uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # ratchet:actions/download-artifact@v3
       with:
