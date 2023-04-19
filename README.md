@@ -3,7 +3,7 @@
 ## What is It?
 
 Mediumautopost is a CLI tool (and a Go package) that will automatically post your website's articles to medium.com as long as you have your website set up according to this README. Usage is simple, and once it's set up it will work with one single command. 
-
+ 
 ## How to Install
 
 `brew tap askcloudarchitech/askcloudarchitech && brew install mediumautopost`  
